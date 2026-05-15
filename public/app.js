@@ -101,8 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    }
-
     function setLoading(isLoading) {
         if (isLoading) {
             analyzeBtn.disabled = true;
@@ -227,10 +225,12 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
     }
 
-    clearHistoryBtn.addEventListener('click', () => {
-        localStorage.removeItem('sentiment_history');
-        renderHistory();
-    });
+    if (clearHistoryBtn) {
+        clearHistoryBtn.addEventListener('click', () => {
+            localStorage.removeItem('sentiment_history');
+            renderHistory();
+        });
+    }
 
     window.loadHistoryItem = (id) => {
         const history = JSON.parse(localStorage.getItem('sentiment_history') || '[]');
