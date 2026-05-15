@@ -42,9 +42,8 @@ body {
 /* Header */
 .header {
     padding: 40px 0;
-    backdrop-filter: blur(10px);
-    position: sticky;
-    top: 0;
+    background-color: var(--bg);
+    position: relative;
     z-index: 100;
 }
 
