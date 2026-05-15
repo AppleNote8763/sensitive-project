@@ -68,6 +68,8 @@ app.post('/api/analyze', async (req, res) => {
                        { "primaryEmotion": "주요 감정", "intensity": "감정 강도", "tone": "문장 톤", "expression": "표현 방식" }
                     8. highlights: 감성 포인트 분석 (텍스트 내 주요 구절과 해당 감성)
                        [ { "text": "구절", "sentiment": "positive | negative | neutral" } ]
+                    9. imagePrompt: 이 감성을 시각화하기 위한 DALL-E 3용 상세 영어 프롬프트. 
+                       (예: "A futuristic, neon-lit digital art of a lonely figure in a rainy cyberpunk city, deep purple and blue tones, emotional atmosphere, high quality")
 
                     응답은 반드시 지정된 JSON 형식을 엄격히 지켜야 한다.`
                 },
@@ -82,7 +84,6 @@ app.post('/api/analyze', async (req, res) => {
         const result = JSON.parse(response.choices[0].message.content);
 
         // 3. Supabase Logging (Non-blocking)
-        // We don't await this to ensure fast response to the user
         logToSupabase(text, result).catch(err => console.error('Supabase Log Error:', err));
 
         // 4. Return Result
@@ -91,6 +92,30 @@ app.post('/api/analyze', async (req, res) => {
     } catch (error) {
         console.error('Analysis Error:', error);
         res.status(500).json({ error: '분석 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.' });
+    }
+});
+
+// Image Generation Endpoint
+app.post('/api/generate-image', async (req, res) => {
+    const { prompt } = req.body;
+
+    if (!prompt) {
+        return res.status(400).json({ error: '프롬프트가 필요합니다.' });
+    }
+
+    try {
+        const response = await openai.images.generate({
+            model: "dall-e-3",
+            prompt: prompt + ", futuristic, emotional, cinematic lighting, 4k, digital art style, matching the sentiment of the text",
+            n: 1,
+            size: "1024x1024",
+            quality: "standard",
+        });
+
+        res.json({ url: response.data[0].url });
+    } catch (error) {
+        console.error('Image Generation Error:', error);
+        res.status(500).json({ error: '이미지 생성 중 문제가 발생했습니다.' });
     }
 });
 

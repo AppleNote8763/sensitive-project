@@ -28,6 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const tagsContainer = document.getElementById('tags-container');
     const highlightsContainer = document.getElementById('highlights-container');
     
+    // Image Visualization
+    const visualizationContainer = document.getElementById('visualization-container');
+    const visualPlaceholder = visualizationContainer.querySelector('.visual-placeholder');
+    const sentimentImage = document.getElementById('sentiment-image');
+
     // Details
     const detailEmotion = document.getElementById('detail-emotion');
     const detailIntensity = document.getElementById('detail-intensity');
@@ -93,6 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             displayResult(data);
             saveToHistory(text, data);
+            
+            // Trigger Image Generation
+            generateImage(data.imagePrompt);
         } catch (error) {
             console.error('Error:', error);
             showError(error.message);
@@ -100,6 +108,30 @@ document.addEventListener('DOMContentLoaded', () => {
             setLoading(false);
         }
     });
+
+    async function generateImage(prompt) {
+        visualPlaceholder.classList.remove('hidden');
+        sentimentImage.classList.add('hidden');
+        
+        try {
+            const response = await fetch('/api/generate-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt })
+            });
+            const data = await response.json();
+            if (data.url) {
+                sentimentImage.src = data.url;
+                sentimentImage.onload = () => {
+                    visualPlaceholder.classList.add('hidden');
+                    sentimentImage.classList.remove('hidden');
+                };
+            }
+        } catch (error) {
+            console.error('Image Gen Error:', error);
+            visualPlaceholder.innerHTML = '<span>이미지 생성 실패</span>';
+        }
+    }
 
     function setLoading(isLoading) {
         if (isLoading) {
