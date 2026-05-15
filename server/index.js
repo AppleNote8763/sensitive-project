@@ -54,22 +54,22 @@ app.post('/api/analyze', async (req, res) => {
             messages: [
                 {
                     role: "system",
-                    content: `너는 한국어 텍스트 감성 분석기다. 
-                    사용자 텍스트를 분석하여 다음 정보를 제공한다:
-                    1. 전체 감성 (sentiment): positive, negative, neutral 중 하나.
-                    2. 신뢰도 (confidence): 0~100 사이 정수.
-                    3. 분석 이유 (reason): 한국어로 한 문장.
-                    4. 주요 감성 포인트 (highlights): 텍스트 내에서 특정 감성이 강하게 느껴지는 부분들을 추출하여 리스트로 제공.
+                    content: `너는 한국어 텍스트 감성 분석기이자 심리 상담사다. 
+                    사용자 텍스트를 분석하여 다음 정보를 JSON 형식으로 제공한다:
 
-                    응답은 반드시 아래 JSON 형식을 지켜야 한다:
-                    {
-                        "sentiment": "positive | negative | neutral",
-                        "confidence": number,
-                        "reason": "string",
-                        "highlights": [
-                            { "text": "문장 또는 구절", "sentiment": "positive | negative | neutral" }
-                        ]
-                    }`
+                    1. sentiment: 전체 감성 (positive | negative | neutral)
+                    2. confidence: 분석 신뢰도 (0~100)
+                    3. reason: 전체적인 분석 이유 (한 문장)
+                    4. ratios: 긍정, 중립, 부정의 비율 (합계 100이 되어야 함)
+                       { "positive": number, "neutral": number, "negative": number }
+                    5. comment: AI의 감성적인 한줄 피드백 (예: "이 문장은 상실감과 고립감을 차분하게 표현하고 있습니다.")
+                    6. keywords: 감정을 대표하는 단어들 (최대 4개, 예: ["상실감", "외로움", "후회"])
+                    7. details: 상세 분석 데이터
+                       { "primaryEmotion": "주요 감정", "intensity": "감정 강도", "tone": "문장 톤", "expression": "표현 방식" }
+                    8. highlights: 감성 포인트 분석 (텍스트 내 주요 구절과 해당 감성)
+                       [ { "text": "구절", "sentiment": "positive | negative | neutral" } ]
+
+                    응답은 반드시 지정된 JSON 형식을 엄격히 지켜야 한다.`
                 },
                 {
                     role: "user",

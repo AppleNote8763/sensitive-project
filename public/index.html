@@ -32,32 +32,105 @@
         <section class="analysis-section">
             <div class="container">
                 <div class="input-panel">
-                    <textarea id="text-input" placeholder="분석할 문장을 입력하세요 (최대 1000자)" maxlength="1000"></textarea>
-                    <div class="button-wrapper">
+                    <div class="textarea-wrapper">
+                        <textarea id="text-input" placeholder="분석할 문장을 입력하세요 (최대 1000자)" maxlength="1000"></textarea>
+                        <div id="char-count" class="char-count">0 / 1000</div>
+                    </div>
+                    <div class="button-group">
+                        <div class="sub-buttons">
+                            <button id="example-btn" class="btn btn-outline">예시 문장</button>
+                            <button id="reset-btn" class="btn btn-outline">초기화</button>
+                        </div>
                         <button id="analyze-btn" class="btn btn-primary">분석하기</button>
                     </div>
                 </div>
 
                 <div id="loading" class="loading hidden">
                     <div class="spinner"></div>
-                    <span>AI가 분석 중입니다...</span>
+                    <span>AI가 감정을 깊게 읽어내고 있습니다...</span>
                 </div>
 
                 <div id="error-box" class="error-box hidden">
                     <p id="error-message"></p>
                 </div>
 
+                <!-- 메인 결과 카드 -->
                 <div id="result-card" class="result-card hidden">
                     <div class="result-header">
                         <h2 id="sentiment-label">중립</h2>
                         <span id="confidence-badge" class="confidence-badge">90%</span>
                     </div>
+                    
                     <div class="result-body">
                         <p id="reason-text">분석 결과가 여기에 표시됩니다.</p>
                     </div>
-                    <div id="highlights-section" class="highlights-section hidden">
-                        <h3>감성 포인트 분석</h3>
+
+                    <!-- 감정 비율 시각화 -->
+                    <div class="sentiment-ratios">
+                        <div class="ratio-item">
+                            <div class="ratio-info"><span>긍정</span><span id="ratio-pos-val">0%</span></div>
+                            <div class="progress-bar"><div id="ratio-pos-bar" class="progress fill-positive"></div></div>
+                        </div>
+                        <div class="ratio-item">
+                            <div class="ratio-info"><span>중립</span><span id="ratio-neu-val">0%</span></div>
+                            <div class="progress-bar"><div id="ratio-neu-bar" class="progress fill-neutral"></div></div>
+                        </div>
+                        <div class="ratio-item">
+                            <div class="ratio-info"><span>부정</span><span id="ratio-neg-val">0%</span></div>
+                            <div class="progress-bar"><div id="ratio-neg-bar" class="progress fill-negative"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- AI 한줄 피드백 -->
+                    <div class="ai-comment-section">
+                        <h4>AI 한줄 피드백</h4>
+                        <p id="ai-comment">"문장을 분석 중입니다..."</p>
+                    </div>
+
+                    <!-- 감정 키워드 태그 -->
+                    <div class="keyword-tags">
+                        <div id="tags-container"></div>
+                    </div>
+
+                    <!-- 감성 포인트 분석 (하이라이트) -->
+                    <div id="highlights-section" class="highlights-section">
+                        <h4>감성 포인트 분석</h4>
                         <div id="highlights-container"></div>
+                    </div>
+                </div>
+
+                <!-- 상세 분석 카드 -->
+                <div id="detail-card" class="detail-card hidden">
+                    <h3>감정 상세 분석</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <label>주요 감정</label>
+                            <span id="detail-emotion">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>감정 강도</label>
+                            <span id="detail-intensity">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>문장 톤</label>
+                            <span id="detail-tone">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>표현 방식</label>
+                            <span id="detail-expression">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 최근 분석 기록 -->
+                <div class="history-section">
+                    <div class="history-header">
+                        <h3>최근 분석 기록</h3>
+                        <button id="clear-history" class="btn-text">지우기</button>
+                    </div>
+                    <div id="history-list" class="history-list">
+                        <!-- 기록이 여기에 추가됨 -->
+                        <p class="empty-msg">최근 분석 기록이 없습니다.</p>
                     </div>
                 </div>
             </div>
