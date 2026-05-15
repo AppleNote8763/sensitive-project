@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sentimentLabel = document.getElementById('sentiment-label');
     const confidenceBadge = document.getElementById('confidence-badge');
     const reasonText = document.getElementById('reason-text');
+    const highlightsSection = document.getElementById('highlights-section');
+    const highlightsContainer = document.getElementById('highlights-container');
 
     analyzeBtn.addEventListener('click', async () => {
         const text = textInput.value.trim();
@@ -90,11 +92,29 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add dynamic color based on sentiment
         sentimentLabel.style.color = `var(--${data.sentiment})`;
 
+        // Render highlights
+        highlightsContainer.innerHTML = '';
+        if (data.highlights && data.highlights.length > 0) {
+            data.highlights.forEach(item => {
+                const badge = document.createElement('div');
+                badge.className = `highlight-item ${item.sentiment}`;
+                badge.innerHTML = `
+                    <span class="highlight-text">"${item.text}"</span>
+                    <span class="highlight-tag">${item.sentiment === 'positive' ? '긍정' : item.sentiment === 'negative' ? '부정' : '중립'}</span>
+                `;
+                highlightsContainer.appendChild(badge);
+            });
+            highlightsSection.classList.remove('hidden');
+        } else {
+            highlightsSection.classList.add('hidden');
+        }
+
         resultCard.classList.remove('hidden');
         window.scrollTo({ top: resultCard.offsetTop - 100, behavior: 'smooth' });
     }
 
     function hideResult() {
         resultCard.classList.add('hidden');
+        highlightsSection.classList.add('hidden');
     }
 });

@@ -55,15 +55,20 @@ app.post('/api/analyze', async (req, res) => {
                 {
                     role: "system",
                     content: `너는 한국어 텍스트 감성 분석기다. 
-                    사용자 텍스트를 positive, negative, neutral 중 하나로 분류한다. 
-                    confidence는 0부터 100 사이의 정수로 작성한다. 
-                    reason은 한국어로 한 문장만 작성한다. 
-                    과장하지 말고 텍스트 근거만 사용한다.
+                    사용자 텍스트를 분석하여 다음 정보를 제공한다:
+                    1. 전체 감성 (sentiment): positive, negative, neutral 중 하나.
+                    2. 신뢰도 (confidence): 0~100 사이 정수.
+                    3. 분석 이유 (reason): 한국어로 한 문장.
+                    4. 주요 감성 포인트 (highlights): 텍스트 내에서 특정 감성이 강하게 느껴지는 부분들을 추출하여 리스트로 제공.
+
                     응답은 반드시 아래 JSON 형식을 지켜야 한다:
                     {
                         "sentiment": "positive | negative | neutral",
                         "confidence": number,
-                        "reason": "string"
+                        "reason": "string",
+                        "highlights": [
+                            { "text": "문장 또는 구절", "sentiment": "positive | negative | neutral" }
+                        ]
                     }`
                 },
                 {
