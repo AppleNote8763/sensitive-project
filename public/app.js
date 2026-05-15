@@ -196,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
             date: new Date().toLocaleString(),
             text: text,
             sentiment: data.sentiment,
-            confidence: data.confidence
+            confidence: data.confidence,
+            fullData: data // Store the entire result object
         };
         history.unshift(newItem);
         localStorage.setItem('sentiment_history', JSON.stringify(history.slice(0, 5)));
@@ -251,8 +252,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const history = JSON.parse(localStorage.getItem('sentiment_history') || '[]');
         const item = history.find(h => h.id == id);
         if (item) {
+            // 1. Restore Text
             textInput.value = item.text;
             textInput.dispatchEvent(new Event('input'));
+            
+            // 2. Restore Full Result UI
+            if (item.fullData) {
+                displayResult(item.fullData);
+            }
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
