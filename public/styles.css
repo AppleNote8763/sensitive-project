@@ -188,69 +188,26 @@ textarea:focus {
     background-color: var(--panel);
     border: 1px solid var(--panel-border);
     border-radius: 28px;
-    padding: 0;
-    overflow: hidden;
+    padding: 48px;
     color: var(--white);
     margin-top: 48px;
     animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
 }
 
-.visualization-container {
-    width: 100%;
-    height: 400px;
-    background-color: #000;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-bottom: 1px solid var(--panel-border);
-}
-
-.visual-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    color: var(--muted);
-    font-size: 0.95rem;
-    text-align: center;
-    padding: 20px;
-}
-
-.visual-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(187, 134, 252, 0.1);
-    border-top: 3px solid var(--point);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-#sentiment-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 1.2s ease;
-}
-
 /* Consistent Content Padding */
-.result-header, 
-.result-body, 
 .sentiment-ratios, 
 .ai-comment-section, 
 .keyword-tags, 
 .highlights-section {
-    padding-left: 48px;
-    padding-right: 48px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .result-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding-top: 48px;
     padding-bottom: 32px;
     margin-bottom: 32px;
     border-bottom: 1px solid var(--panel-border);

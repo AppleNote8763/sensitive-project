@@ -28,11 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tagsContainer = document.getElementById('tags-container');
     const highlightsContainer = document.getElementById('highlights-container');
     
-    // Image Visualization
-    const visualizationContainer = document.getElementById('visualization-container');
-    const visualPlaceholder = visualizationContainer.querySelector('.visual-placeholder');
-    const sentimentImage = document.getElementById('sentiment-image');
-
     // Details
     const detailEmotion = document.getElementById('detail-emotion');
     const detailIntensity = document.getElementById('detail-intensity');
@@ -98,9 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             displayResult(data);
             saveToHistory(text, data);
-            
-            // Trigger Image Generation
-            generateImage(data.imagePrompt);
         } catch (error) {
             console.error('Error:', error);
             showError(error.message);
@@ -109,44 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    async function generateImage(prompt) {
-        visualPlaceholder.classList.remove('hidden');
-        visualPlaceholder.innerHTML = `
-            <div class="visual-spinner"></div>
-            <span>AI가 감성을 시각화하고 있습니다...</span>
-        `;
-        sentimentImage.classList.add('hidden');
-        
-        try {
-            const response = await fetch('/api/generate-image', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt })
-            });
-            
-            if (!response.ok) throw new Error('이미지 생성 요청 실패');
-            
-            const data = await response.json();
-            if (data.url) {
-                sentimentImage.src = data.url;
-                sentimentImage.onload = () => {
-                    visualPlaceholder.classList.add('hidden');
-                    sentimentImage.classList.remove('hidden');
-                    sentimentImage.style.opacity = '1';
-                };
-                sentimentImage.onerror = () => {
-                    throw new Error('이미지 로드 실패');
-                };
-            } else {
-                throw new Error('이미지 URL이 없습니다.');
-            }
-        } catch (error) {
-            console.error('Image Gen Error:', error);
-            visualPlaceholder.innerHTML = `
-                <span style="color: var(--error)">⚠️ 감성 시각화 이미지를 불러올 수 없습니다.</span>
-                <span style="font-size: 0.8rem; margin-top: 5px;">잠시 후 다시 시도해 주세요.</span>
-            `;
-        }
     }
 
     function setLoading(isLoading) {
