@@ -437,6 +437,12 @@ textarea:focus {
     text-overflow: ellipsis;
 }
 
+.history-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
 .history-result {
     display: flex;
     align-items: center;
@@ -446,6 +452,25 @@ textarea:focus {
 .history-sentiment {
     font-weight: 800;
     font-size: 0.9rem;
+}
+
+.btn-delete {
+    background: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: rgba(255, 82, 82, 0.1);
+    color: var(--error);
+    transform: rotate(90deg);
 }
 
 .empty-msg {

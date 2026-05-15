@@ -217,9 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="history-date">${item.date}</span>
                     <span class="history-text">"${item.text}"</span>
                 </div>
-                <div class="history-result">
-                    <span class="history-sentiment" style="color: var(--${item.sentiment})">${sentimentMap[item.sentiment]}</span>
-                    <span class="history-conf">${item.confidence}%</span>
+                <div class="history-right">
+                    <div class="history-result">
+                        <span class="history-sentiment" style="color: var(--${item.sentiment})">${sentimentMap[item.sentiment]}</span>
+                        <span class="history-conf">${item.confidence}%</span>
+                    </div>
+                    <button class="btn-delete" onclick="deleteHistoryItem(event, '${item.id}')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
             </div>
         `).join('');
@@ -227,10 +232,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (clearHistoryBtn) {
         clearHistoryBtn.addEventListener('click', () => {
-            localStorage.removeItem('sentiment_history');
-            renderHistory();
+            if (confirm('모든 기록을 삭제하시겠습니까?')) {
+                localStorage.removeItem('sentiment_history');
+                renderHistory();
+            }
         });
     }
+
+    window.deleteHistoryItem = (event, id) => {
+        event.stopPropagation(); // Prevent loading the item
+        let history = JSON.parse(localStorage.getItem('sentiment_history') || '[]');
+        history = history.filter(item => item.id != id);
+        localStorage.setItem('sentiment_history', JSON.stringify(history));
+        renderHistory();
+    };
 
     window.loadHistoryItem = (id) => {
         const history = JSON.parse(localStorage.getItem('sentiment_history') || '[]');
